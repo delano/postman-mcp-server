@@ -12,7 +12,8 @@ import {
   AuthTools,
   MockTools,
   MonitorTools,
-  AdditionalFeatureTools
+  AdditionalFeatureTools,
+  SdkTools
 } from './tools/index.js';
 import { ToolDefinition, ToolHandler } from './types/index.js';
 import {
@@ -48,6 +49,7 @@ export class PostmanAPIServer {
   private mockTools: MockTools;
   private monitorTools: MonitorTools;
   private additionalFeatureTools: AdditionalFeatureTools;
+  private sdkTools: SdkTools;
   private toolDefinitions: ToolDefinition[];
   private toolHandlers: Map<string, ToolHandler>;
   private isShuttingDown: boolean;
@@ -117,6 +119,7 @@ export class PostmanAPIServer {
     this.mockTools = new MockTools(this.axiosInstance);
     this.monitorTools = new MonitorTools(this.axiosInstance);
     this.additionalFeatureTools = new AdditionalFeatureTools(this.axiosInstance);
+    this.sdkTools = new SdkTools(this.axiosInstance);
 
     // Initialize tool definitions
     this.toolDefinitions = [
@@ -129,6 +132,7 @@ export class PostmanAPIServer {
       ...this.mockTools.getToolDefinitions(),
       ...this.monitorTools.getToolDefinitions(),
       ...this.additionalFeatureTools.getToolDefinitions(),
+      ...this.sdkTools.getToolDefinitions(),
     ];
 
     // Initialize tool handlers map
@@ -142,6 +146,7 @@ export class PostmanAPIServer {
       ...this.mockTools.getToolMappings(),
       ...this.monitorTools.getToolMappings(),
       ...this.additionalFeatureTools.getToolMappings(),
+      ...this.sdkTools.getToolMappings(),
     };
     this.toolHandlers = new Map(Object.entries(toolMapping));
 

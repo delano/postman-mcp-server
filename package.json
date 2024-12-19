@@ -19,7 +19,9 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
     "@types/axios": "^0.14.4",
+    "@types/postman-collection": "^3.5.10",
     "axios": "^1.7.9",
+    "postman-collection": "^4.5.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
