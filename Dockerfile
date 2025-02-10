@@ -20,8 +20,8 @@ RUN pnpm run build
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Set environment variable for Postman API Key
-ENV POSTMAN_API_KEY=your_api_key_here
+# The POSTMAN_API_KEY will be provided via environment variables
+ENV POSTMAN_API_KEY=${POSTMAN_API_KEY}
 
 # Run the application
 CMD ["node", "build/index.js"]
