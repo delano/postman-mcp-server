@@ -20,7 +20,7 @@ Each of the following documents contains a summary of the Postman API functional
 
 ## Prompts
 
-**Using Cline 2.2.2 and Continue 0.9.246**
+**OpenAPI Specification Source:** The Postman API OpenAPI 3 definition is obtained from the [Postman Public Workspace](https://www.postman.com/postman/postman-public-workspace/documentation/i2uqzpp/postman-api) (manual process).
 
 Building out the Postman API functionality within the MCP server tools follows this general order of operations:
 
