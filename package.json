@@ -20,6 +20,7 @@
     "@modelcontextprotocol/sdk": "0.6.0",
     "@types/axios": "^0.14.4",
     "axios": "^1.7.9",
+    "mcp-evals": "^1.0.18",
     "zod": "^3.24.1"
   },
   "devDependencies": {
