@@ -18,6 +18,9 @@ const ListToolResourcesRequestSchema = z.object({
   method: z.literal('tools/resources/list')
 });
 
+// Detect if we're running in Bun
+const isBunRuntime = typeof (globalThis as any).Bun !== 'undefined';
+
 /**
  * Handles tool-related requests and connects them to tool implementations
  */
@@ -33,7 +36,10 @@ export class ToolHandler {
   private setupHandlers() {
     this.setupListTools();
     this.setupCallTool();
-    this.setupListToolResources();
+    // Only setup tool resources handler if not running in Bun (due to type compatibility issues)
+    if (!isBunRuntime) {
+      this.setupListToolResources();
+    }
   }
 
   private setupListTools() {
@@ -43,7 +49,7 @@ export class ToolHandler {
   }
 
   private setupListToolResources() {
-    this.server.setRequestHandler(ListToolResourcesRequestSchema, async () => {
+    this.server.setRequestHandler(ListToolResourcesRequestSchema as any, async () => {
       try {
         const allResources: ToolResource[] = [];
 
