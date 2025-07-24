@@ -102,7 +102,10 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
                 schema: { type: 'string' }
               }
             },
-            item: { type: 'array' }
+            item: { 
+              type: 'array',
+              items: {}
+            }
           }
         }
       },
