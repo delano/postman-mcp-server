@@ -1,12 +1,12 @@
-import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { AxiosInstance } from 'axios';
+import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
+import { AxiosInstance } from "axios";
 import {
   ToolCallResponse,
   ToolDefinition,
   ToolHandler,
-} from '../../../types/index.js';
-import { BasePostmanTool } from '../base.js';
-import { TOOL_DEFINITIONS } from './definitions.js';
+} from "../../../types/index.js";
+import { BasePostmanTool } from "../base.js";
+import { TOOL_DEFINITIONS } from "./definitions.js";
 
 /**
  * Implements Postman Collection API operations
@@ -23,58 +23,58 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
 
   private createResponse(data: any): ToolCallResponse {
     return {
-      content: [{ type: 'text', text: JSON.stringify(data, null, 2) }]
+      content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
     };
   }
 
   async handleToolCall(name: string, args: any): Promise<ToolCallResponse> {
     try {
       switch (name) {
-        case 'list_collections':
+        case "list_collections":
           return await this.listCollections(args);
-        case 'get_collection':
+        case "get_collection":
           return await this.getCollection(args);
-        case 'create_collection':
+        case "create_collection":
           return await this.createCollection(args);
-        case 'update_collection':
+        case "update_collection":
           return await this.updateCollection(args);
-        case 'patch_collection':
+        case "patch_collection":
           return await this.patchCollection(args);
-        case 'delete_collection':
+        case "delete_collection":
           return await this.deleteCollection(args.collection_id);
-        case 'create_collection_folder':
+        case "create_collection_folder":
           return await this.createCollectionFolder(args);
-        case 'get_collection_folder':
+        case "get_collection_folder":
           return await this.getCollectionFolder(args);
-        case 'update_collection_folder':
+        case "update_collection_folder":
           return await this.updateCollectionFolder(args);
-        case 'delete_collection_folder':
+        case "delete_collection_folder":
           return await this.deleteCollectionFolder(args);
-        case 'create_collection_request':
+        case "create_collection_request":
           return await this.createCollectionRequest(args);
-        case 'get_collection_request':
+        case "get_collection_request":
           return await this.getCollectionRequest(args);
-        case 'update_collection_request':
+        case "update_collection_request":
           return await this.updateCollectionRequest(args);
-        case 'delete_collection_request':
+        case "delete_collection_request":
           return await this.deleteCollectionRequest(args);
-        case 'create_collection_response':
+        case "create_collection_response":
           return await this.createCollectionResponse(args);
-        case 'get_collection_response':
+        case "get_collection_response":
           return await this.getCollectionResponse(args);
-        case 'update_collection_response':
+        case "update_collection_response":
           return await this.updateCollectionResponse(args);
-        case 'delete_collection_response':
+        case "delete_collection_response":
           return await this.deleteCollectionResponse(args);
-        case 'fork_collection':
+        case "fork_collection":
           return await this.forkCollection(args);
-        case 'get_collection_forks':
+        case "get_collection_forks":
           return await this.getCollectionForks(args);
-        case 'merge_collection_fork':
+        case "merge_collection_fork":
           return await this.mergeCollectionFork(args);
-        case 'pull_collection_changes':
+        case "pull_collection_changes":
           return await this.pullCollectionChanges(args);
-        case 'transfer_collection_items':
+        case "transfer_collection_items":
           return await this.transferCollectionItems(args);
         default:
           throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${name}`);
@@ -90,7 +90,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * If workspace not specified, lists collections in "My Workspace"
    */
   async listCollections(args: any): Promise<ToolCallResponse> {
-    const response = await this.client.get('/collections', { params: args });
+    const response = await this.client.get("/collections", { params: args });
     return this.createResponse(response.data);
   }
 
@@ -99,7 +99,9 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    */
   async getCollection(args: any): Promise<ToolCallResponse> {
     const { collection_id, ...params } = args;
-    const response = await this.client.get(`/collections/${collection_id}`, { params });
+    const response = await this.client.get(`/collections/${collection_id}`, {
+      params,
+    });
     return this.createResponse(response.data);
   }
 
@@ -108,9 +110,11 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * Creates in "My Workspace" if workspace not specified
    */
   async createCollection(args: any): Promise<ToolCallResponse> {
-    const response = await this.client.post('/collections', {
+    const response = await this.client.post("/collections", {
       collection: args.collection,
-      workspace: args.workspace ? { id: args.workspace, type: 'workspace' } : undefined
+      workspace: args.workspace
+        ? { id: args.workspace, type: "workspace" }
+        : undefined,
     });
     return this.createResponse(response.data);
   }
@@ -120,9 +124,12 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * Maximum collection size: 20 MB
    */
   async updateCollection(args: any): Promise<ToolCallResponse> {
-    const response = await this.client.put(`/collections/${args.collection_id}`, {
-      collection: args.collection
-    });
+    const response = await this.client.put(
+      `/collections/${args.collection_id}`,
+      {
+        collection: args.collection,
+      },
+    );
     return this.createResponse(response.data);
   }
 
@@ -131,9 +138,12 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * Only updates provided fields
    */
   async patchCollection(args: any): Promise<ToolCallResponse> {
-    const response = await this.client.patch(`/collections/${args.collection_id}`, {
-      collection: args.collection
-    });
+    const response = await this.client.patch(
+      `/collections/${args.collection_id}`,
+      {
+        collection: args.collection,
+      },
+    );
     return this.createResponse(response.data);
   }
 
@@ -151,7 +161,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
   async createCollectionFolder(args: any): Promise<ToolCallResponse> {
     const response = await this.client.post(
       `/collections/${args.collection_id}/folders`,
-      args.folder
+      args.folder,
     );
     return this.createResponse(response.data);
   }
@@ -163,7 +173,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
     const { collection_id, folder_id, ...params } = args;
     const response = await this.client.get(
       `/collections/${collection_id}/folders/${folder_id}`,
-      { params }
+      { params },
     );
     return this.createResponse(response.data);
   }
@@ -175,7 +185,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
   async updateCollectionFolder(args: any): Promise<ToolCallResponse> {
     const response = await this.client.put(
       `/collections/${args.collection_id}/folders/${args.folder_id}`,
-      args.folder
+      args.folder,
     );
     return this.createResponse(response.data);
   }
@@ -185,7 +195,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    */
   async deleteCollectionFolder(args: any): Promise<ToolCallResponse> {
     const response = await this.client.delete(
-      `/collections/${args.collection_id}/folders/${args.folder_id}`
+      `/collections/${args.collection_id}/folders/${args.folder_id}`,
     );
     return this.createResponse(response.data);
   }
@@ -197,7 +207,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
     const response = await this.client.post(
       `/collections/${args.collection_id}/requests`,
       args.request,
-      { params: args.folder_id ? { folder_id: args.folder_id } : undefined }
+      { params: args.folder_id ? { folder_id: args.folder_id } : undefined },
     );
     return this.createResponse(response.data);
   }
@@ -209,7 +219,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
     const { collection_id, request_id, ...params } = args;
     const response = await this.client.get(
       `/collections/${collection_id}/requests/${request_id}`,
-      { params }
+      { params },
     );
     return this.createResponse(response.data);
   }
@@ -218,11 +228,108 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * Update a request in a collection
    * Cannot change request folder
    */
-  async updateCollectionRequest(args: any): Promise<ToolCallResponse> {
+  async updateCollectionRequest_sends_event_singular(
+    args: any,
+  ): Promise<ToolCallResponse> {
+    console.log(
+      "[updateCollectionRequest] Sending update request:",
+      JSON.stringify(args.request),
+    );
     const response = await this.client.put(
       `/collections/${args.collection_id}/requests/${args.request_id}`,
-      args.request
+      args.request,
     );
+    return this.createResponse(response.data);
+  }
+
+  async updateCollectionRequest(args: any): Promise<ToolCallResponse> {
+    return this.updateCollectionRequest_sends_events_plural(args);
+  }
+
+  /**
+   * Update a request in a collection
+   * Cannot change request folder
+   * Includes version verification
+   */
+  async updateCollectionRequest_sends_events_plural(
+    args: any,
+  ): Promise<ToolCallResponse> {
+    // Log request details before sending
+    console.log(
+      `[Postman API] Updating request ${args.request_id} in collection ${args.collection_id}`,
+    );
+
+    // Check if request has script content
+    const hasScript = args.request?.event?.[0]?.script?.exec?.length > 0;
+    if (hasScript) {
+      console.log(
+        `[Postman API] Script length: ${args.request.event[0].script.exec.length} lines`,
+      );
+      console.log(
+        `[Postman API] First line: "${args.request.event[0].script.exec[0].substring(0, 50)}..."`,
+      );
+      console.log(
+        `[Postman API] Last line: "${args.request.event[0].script.exec[args.request.event[0].script.exec.length - 1].substring(0, 50)}..."`,
+      );
+    }
+
+    // Get the current version before update (optional)
+    let currentVersion;
+    try {
+      const currentItem = await this.client.get(
+        `/collections/${args.collection_id}/requests/${args.request_id}`,
+      );
+      currentVersion = currentItem.data?.data?.lastRevision || "unknown";
+      console.log(
+        `[Postman API] Current revision before update: ${currentVersion}`,
+      );
+    } catch (err) {
+      console.error(
+        `[Postman API] Failed to get current version: ${err.message}`,
+      );
+    }
+
+    // Perform the update
+    const response = await this.client.put(
+      `/collections/${args.collection_id}/requests/${args.request_id}`,
+      args.request,
+    );
+
+    // Log response details
+    const newVersion = response.data?.revision || "unknown";
+    console.log(
+      `[Postman API] Update response received with revision: ${newVersion}`,
+    );
+
+    // Verify if script was changed as expected
+    if (response.data?.data?.events?.[0]?.script?.exec) {
+      const returnedScript = response.data.data.events[0].script.exec;
+      console.log(
+        `[Postman API] Returned script length: ${returnedScript.length} lines`,
+      );
+      console.log(
+        `[Postman API] Returned first line: "${returnedScript[0].substring(0, 50)}..."`,
+      );
+      console.log(
+        `[Postman API] Returned last line: "${returnedScript[returnedScript.length - 1].substring(0, 50)}..."`,
+      );
+
+      // Check if the script was modified as expected
+      if (hasScript) {
+        const requestScriptLen = args.request.event[0].script.exec.length;
+        const responseScriptLen = returnedScript.length;
+        console.log(
+          `[Postman API] Script size change: ${requestScriptLen} → ${responseScriptLen}`,
+        );
+
+        if (requestScriptLen !== responseScriptLen) {
+          console.warn(
+            `[Postman API] WARNING: Script length changed unexpectedly!`,
+          );
+        }
+      }
+    }
+
     return this.createResponse(response.data);
   }
 
@@ -231,7 +338,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    */
   async deleteCollectionRequest(args: any): Promise<ToolCallResponse> {
     const response = await this.client.delete(
-      `/collections/${args.collection_id}/requests/${args.request_id}`
+      `/collections/${args.collection_id}/requests/${args.request_id}`,
     );
     return this.createResponse(response.data);
   }
@@ -243,7 +350,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
     const response = await this.client.post(
       `/collections/${args.collection_id}/responses`,
       args.response,
-      { params: { request_id: args.request_id } }
+      { params: { request_id: args.request_id } },
     );
     return this.createResponse(response.data);
   }
@@ -255,7 +362,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
     const { collection_id, response_id, ...params } = args;
     const response = await this.client.get(
       `/collections/${collection_id}/responses/${response_id}`,
-      { params }
+      { params },
     );
     return this.createResponse(response.data);
   }
@@ -267,7 +374,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
   async updateCollectionResponse(args: any): Promise<ToolCallResponse> {
     const response = await this.client.put(
       `/collections/${args.collection_id}/responses/${args.response_id}`,
-      args.response
+      args.response,
     );
     return this.createResponse(response.data);
   }
@@ -277,7 +384,7 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    */
   async deleteCollectionResponse(args: any): Promise<ToolCallResponse> {
     const response = await this.client.delete(
-      `/collections/${args.collection_id}/responses/${args.response_id}`
+      `/collections/${args.collection_id}/responses/${args.response_id}`,
     );
     return this.createResponse(response.data);
   }
@@ -286,10 +393,13 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * Fork a collection to a workspace
    */
   async forkCollection(args: any): Promise<ToolCallResponse> {
-    const response = await this.client.post(`/collections/fork/${args.collection_id}`, {
-      workspace: { id: args.workspace, type: 'workspace' },
-      label: args.label
-    });
+    const response = await this.client.post(
+      `/collections/fork/${args.collection_id}`,
+      {
+        workspace: { id: args.workspace, type: "workspace" },
+        label: args.label,
+      },
+    );
     return this.createResponse(response.data);
   }
 
@@ -298,14 +408,17 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    */
   async getCollectionForks(args: any): Promise<ToolCallResponse> {
     const { collection_id, ...params } = args;
-    const response = await this.client.get(`/collections/${collection_id}/forks`, {
-      params: {
-        cursor: params.cursor,
-        limit: params.limit,
-        direction: params.direction,
-        sort: params.sort
-      }
-    });
+    const response = await this.client.get(
+      `/collections/${collection_id}/forks`,
+      {
+        params: {
+          cursor: params.cursor,
+          limit: params.limit,
+          direction: params.direction,
+          sort: params.sort,
+        },
+      },
+    );
     return this.createResponse(response.data);
   }
 
@@ -313,10 +426,10 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * Merge a forked collection back into its parent
    */
   async mergeCollectionFork(args: any): Promise<ToolCallResponse> {
-    const response = await this.client.put('/collection-merges', {
+    const response = await this.client.put("/collection-merges", {
       strategy: args.strategy,
       source: args.source,
-      destination: args.destination
+      destination: args.destination,
     });
     return this.createResponse(response.data);
   }
@@ -325,7 +438,10 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * Pull changes from parent collection into forked collection
    */
   async pullCollectionChanges(args: any): Promise<ToolCallResponse> {
-    const response = await this.client.put(`/collections/${args.collection_id}/pulls`, {});
+    const response = await this.client.put(
+      `/collections/${args.collection_id}/pulls`,
+      {},
+    );
     return this.createResponse(response.data);
   }
 
@@ -333,15 +449,18 @@ export class CollectionTools extends BasePostmanTool implements ToolHandler {
    * Transfer items between collections
    */
   async transferCollectionItems(args: any): Promise<ToolCallResponse> {
-    const endpoint = args.type === 'folder' ? '/collection-folders-transfers' :
-                    args.type === 'request' ? '/collection-requests-transfers' :
-                    '/collection-responses-transfers';
+    const endpoint =
+      args.type === "folder"
+        ? "/collection-folders-transfers"
+        : args.type === "request"
+          ? "/collection-requests-transfers"
+          : "/collection-responses-transfers";
 
     const response = await this.client.post(endpoint, {
       ids: args.ids,
       target: args.target,
       location: args.location,
-      mode: args.mode
+      mode: args.mode,
     });
     return this.createResponse(response.data);
   }
