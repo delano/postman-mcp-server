@@ -1,4 +1,5 @@
 # Postman MCP Server
+[![Trust Score](https://archestra.ai/mcp-catalog/api/badge/quality/delano/postman-mcp-server)](https://archestra.ai/mcp-catalog/delano__postman-mcp-server)
 [![smithery badge](https://smithery.ai/badge/postman-api-server)](https://smithery.ai/server/postman-api-server)
 **Version:** v0.2.0
 
