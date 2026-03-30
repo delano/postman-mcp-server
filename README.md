@@ -49,6 +49,10 @@ This project is part of the Model Context Protocol (MCP) initiative from Anthrop
 
 Postman MCP Server is a TypeScript-based MCP server that integrates with the Postman API, providing comprehensive management of Postman collections, environments, and APIs.
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/delano-postman-mcp-server).
+
 ## Features
 
 ### Collections
