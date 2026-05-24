@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { ToolDefinition, ToolResource } from '../../types/index.js';
+import https from 'https';
 
 interface PostmanToolOptions {
   baseURL?: string;
@@ -40,9 +41,19 @@ export class BasePostmanTool {
         headers: {
           'X-Api-Key': apiKey,
           'Content-Type': 'application/json'
-        }
+        },
+        timeout: 30000, // 30 seconds timeout
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false // Disable SSL verification for corporate proxy
+        })
       });
     }
+
+    // Add request interceptor for logging
+    this.client.interceptors.request.use(config => {
+      console.log('Making request to:', config.url);
+      return config;
+    });
 
     // Add custom Accept header if provided
     if (options.acceptHeader) {
@@ -56,6 +67,7 @@ export class BasePostmanTool {
     this.client.interceptors.response.use(
       response => response,
       error => {
+        console.error('Axios error:', error.code, error.message);
         if (error.response) {
           // Map HTTP status codes to appropriate MCP error codes
           switch (error.response.status) {

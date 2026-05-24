@@ -1,0 +1,22 @@
+# Dependencies / virtualenvs
+node_modules/
+.venv/
+venv/
+
+# Build artifacts
+build/
+target/
+dist/
+.gradle/
+.idea/
+
+# Generated code
+**/*.pb.go
+**/*_pb2.py
+**/*_pb2_grpc.py
+**/generated/
+
+# Large test fixtures
+**/testdata/
+**/fixtures/
+*.orc

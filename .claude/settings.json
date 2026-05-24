@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(node_modules/**)",
+      "Read(.venv/**)",
+      "Read(venv/**)",
+      "Read(build/**)",
+      "Read(target/**)",
+      "Read(dist/**)",
+      "Read(.gradle/**)",
+      "Read(.idea/**)",
+      "Read(**/*.pb.go)",
+      "Read(**/*_pb2.py)",
+      "Read(**/*_pb2_grpc.py)",
+      "Read(**/generated/**)",
+      "Read(**/testdata/**)",
+      "Read(**/fixtures/**)",
+      "Read(**/*.orc)"
+    ]
+  }
+}

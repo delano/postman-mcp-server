@@ -3,6 +3,7 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { McpError, ErrorCode } from '@modelcontextprotocol/sdk/types.js';
 import axios, { AxiosError } from 'axios';
+import https from 'https';
 import {
   WorkspaceTools,
   EnvironmentTools,
@@ -79,6 +80,9 @@ export class PostmanAPIServer {
       },
       timeout: CONFIG.REQUEST_TIMEOUT,
       validateStatus: (status) => status >= 200 && status < 300,
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false // Disable SSL verification for corporate proxy
+      })
     });
 
     // Add response interceptor for error handling
