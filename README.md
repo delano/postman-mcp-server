@@ -1,5 +1,5 @@
 # Postman MCP Server
-[![smithery badge](https://smithery.ai/badge/postman-api-server)](https://smithery.ai/server/postman-api-server)
+[![Listed on LightNow](https://lightnow.ai/badge/io.github.delano/postman-mcp-server?variant=listed)](https://lightnow.ai/servers/io.github.delano/postman-mcp-server)
 **Version:** v0.2.0
 
 An MCP server that provides access to the [Postman](https://www.postman.com/) API. Functionality is based on the [official OpenAPI specification](https://www.postman.com/postman/postman-public-workspace/documentation/i2uqzpp/postman-api). For more information, see the [Postman API documentation](https://www.postman.com/postman-public-workspace/).
